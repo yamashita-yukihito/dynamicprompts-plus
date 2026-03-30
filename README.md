@@ -4,9 +4,26 @@
 > 
 > **実験的フォーク版（dynamicprompts-plus）について：**
 > このフォークは、Stable Diffusion / ReForge 環境において、より高度な独自のプロンプト構文（`if` 文による条件分岐など）を実装するために作成されたカスタマイズ用コアライブラリです。
-> `sd-dynamic-prompts-plus` 拡張機能のバックエンドとして動作します。
 > 
-> (Planned features: Support for Custom conditional statements such as `if` block parsing and advanced prompt flow generation.)
+> ⚠️ **現在のステータス**: まだ `if` 文などの新機能は追加されておらず、**開発準備中の段階（WIP）** です。機能としてはオリジナル版と全く同一です。
+> 
+> (Planned features: Support for Custom conditional statements such as `if` block parsing and advanced prompt flow generation. Currently in vanilla state.)
+
+## A1111 / ReForge 環境での使い方 (How to install on WebUI)
+
+もしこのフォーク版の独自機能をあなたの WebUI 拡張機能（`sd-dynamic-prompts`）で利用したい場合は、プラグインの依存関係を書き換える必要があります。
+
+1. WebUIインストール先にある `extensions\sd-dynamic-prompts\pyproject.toml` をテキストエディタで開きます。
+2. `[project] dependencies` 内の `dynamicprompts` の行を、以下のように「バージョン指定無しのGit参照」に書き換えて上書き保存します。
+
+```toml
+[project]
+dependencies = [
+    "send2trash~=1.8",
+    "dynamicprompts[attentiongrabber,magicprompt] @ git+https://github.com/yamashita-yukihito/dynamicprompts-plus.git@main",
+]
+```
+3. そのまま WebUI (例: `webui-user.bat`) を再起動すると、自動的に公式版ではなくこちらのカスタムフォーク版のコードがインストールされ、稼働します。
 
 ---
 
