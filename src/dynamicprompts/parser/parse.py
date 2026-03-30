@@ -39,6 +39,7 @@ import pyparsing as pp
 
 from dynamicprompts.commands import (
     Command,
+    IfCommand,
     LiteralCommand,
     SamplingMethod,
     SequenceCommand,
@@ -47,6 +48,7 @@ from dynamicprompts.commands import (
     WildcardCommand,
     WrapCommand,
 )
+from dynamicprompts.commands.if_command import Predicate
 from dynamicprompts.commands.variable_commands import (
     VariableAccessCommand,
     VariableAssignmentCommand,
@@ -271,6 +273,29 @@ def _configure_wrap_command(
     return wrap_command.leave_whitespace()
 
 
+def _configure_if_command(
+    parser_config: ParserConfig,
+    prompt: pp.ParserElement,
+) -> pp.ParserElement:
+    if_start_str = parser_config.wrap_start.replace("%", "%if")
+    if_start = pp.Suppress(if_start_str)
+
+    eq_or_neq = (pp.Literal("eq") | pp.Literal("neq"))("op") + variant_delim + prompt()("arg1") + variant_delim + prompt()("arg2") + variant_delim + prompt()("then_command") + pp.Opt(variant_delim + prompt()("else_command"))
+    defined = pp.Literal("defined")("op") + variant_delim + var_name("name") + variant_delim + prompt()("then_command") + pp.Opt(variant_delim + prompt()("else_command"))
+    truthy = pp.Literal("truthy")("op") + variant_delim + prompt()("arg1") + variant_delim + prompt()("then_command") + pp.Opt(variant_delim + prompt()("else_command"))
+
+    ops = pp.Group(eq_or_neq | defined | truthy)("predicate")
+
+    if_command = pp.Group(
+        if_start
+        + OPT_WS
+        + ops
+        + OPT_WS
+        + pp.Suppress(parser_config.wrap_end),
+    )
+    return if_command.leave_whitespace()
+
+
 def _parse_literal_command(parse_result: pp.ParseResults) -> LiteralCommand:
     s = " ".join(parse_result)
     return LiteralCommand(s)
@@ -434,6 +459,29 @@ def _parse_wrap_command(
     )
 
 
+def _parse_if_command(
+    parse_result: pp.ParseResults,
+) -> IfCommand:
+    parts = parse_result[0].as_dict()
+    pred_parts = parts["predicate"]
+    op = pred_parts["op"]
+
+    args = []
+    if op in ("eq", "neq"):
+        args = [pred_parts["arg1"], pred_parts["arg2"]]
+    elif op == "truthy":
+        args = [pred_parts["arg1"]]
+    elif op == "defined":
+        args = [pred_parts["name"]]
+
+    predicate = Predicate(op=op, args=tuple(args))
+    return IfCommand(
+        predicate=predicate,
+        then_command=pred_parts["then_command"],
+        else_command=pred_parts.get("else_command"),
+    )
+
+
 def create_parser(
     *,
     parser_config: ParserConfig,
@@ -460,6 +508,10 @@ def create_parser(
         parser_config=parser_config,
         prompt=variant_prompt,
     )
+    if_command = _configure_if_command(
+        parser_config=parser_config,
+        prompt=variant_prompt,
+    )
     wildcard = _configure_wildcard(
         parser_config=parser_config,
         prompt=wildcard_prompt,
@@ -482,13 +534,14 @@ def create_parser(
     chunk = (
         variable_assignment
         | variable_access
+        | if_command
         | wrap_command
         | variants
         | wildcard
         | literal_sequence
     )
     variant_chunk = (
-        variable_access | wrap_command | variants | wildcard | variant_literal_sequence
+        variable_access | if_command | wrap_command | variants | wildcard | variant_literal_sequence
     )
     wildcard_chunk = (
         wildcard_variable_access
@@ -519,6 +572,7 @@ def create_parser(
     prompt.set_parse_action(_parse_sequence_or_single_command)
     variant_prompt.set_parse_action(_parse_sequence_or_single_command)
     wrap_command.set_parse_action(_parse_wrap_command)
+    if_command.set_parse_action(_parse_if_command)
     wildcard_prompt.set_parse_action(_parse_sequence_or_single_command)
     return prompt
 

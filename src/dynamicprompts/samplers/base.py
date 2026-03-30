@@ -4,12 +4,14 @@ import logging
 
 from dynamicprompts.commands import (
     Command,
+    IfCommand,
     LiteralCommand,
     SequenceCommand,
     VariantCommand,
     WildcardCommand,
     WrapCommand,
 )
+from dynamicprompts.commands.if_command import Predicate
 from dynamicprompts.commands.variable_commands import (
     VariableAccessCommand,
     VariableAssignmentCommand,
@@ -46,6 +48,8 @@ class Sampler:
             return self._get_variable(command, context)
         if isinstance(command, WrapCommand):
             return self._get_wrap(command, context)
+        if isinstance(command, IfCommand):
+            return self._get_if(command, context)
         return self._unsupported_command(command)
 
     def _unsupported_command(self, command: Command) -> ResultGen:
@@ -110,3 +114,42 @@ class Sampler:
         context: SamplingContext,
     ) -> ResultGen:
         return self._unsupported_command(command)
+
+    def _evaluate_predicate(
+        self,
+        predicate: Predicate,
+        context: SamplingContext,
+    ) -> bool:
+        op = predicate.op
+        if op == "defined":
+            var_name = predicate.args[0]
+            assert isinstance(var_name, str)
+            return var_name in context.variables
+
+        elif op == "truthy":
+            arg = predicate.args[0]
+            assert isinstance(arg, Command)
+            val = next(iter(context.sample_prompts(arg, 1))).text.strip().lower()
+            return val not in ("", "false", "0", "no", "off")
+
+        elif op in ("eq", "neq"):
+            arg1, arg2 = predicate.args[0], predicate.args[1]
+            assert isinstance(arg1, Command) and isinstance(arg2, Command)
+            left = next(iter(context.sample_prompts(arg1, 1))).text
+            right = next(iter(context.sample_prompts(arg2, 1))).text
+            is_eq = (left == right)
+            return is_eq if op == "eq" else not is_eq
+
+        return False
+
+    def _get_if(
+        self,
+        command: IfCommand,
+        context: SamplingContext,
+    ) -> ResultGen:
+        if self._evaluate_predicate(command.predicate, context):
+            yield from context.generator_from_command(command.then_command)
+        elif command.else_command:
+            yield from context.generator_from_command(command.else_command)
+        else:
+            yield SamplingResult(text="")
