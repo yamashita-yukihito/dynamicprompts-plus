@@ -1,4 +1,16 @@
-# Dynamic Prompts
+# dynamicprompts-plus (Custom Fork)
+
+> **Notice:** This repository is a custom fork of the original [adieyal/dynamicprompts](https://github.com/adieyal/dynamicprompts) library.
+> 
+> **実験的フォーク版（dynamicprompts-plus）について：**
+> このフォークは、Stable Diffusion / ReForge 環境において、より高度な独自のプロンプト構文（`if` 文による条件分岐など）を実装するために作成されたカスタマイズ用コアライブラリです。
+> `sd-dynamic-prompts-plus` 拡張機能のバックエンドとして動作します。
+> 
+> (Planned features: Support for Custom conditional statements such as `if` block parsing and advanced prompt flow generation.)
+
+---
+
+## Original README below
 
 ![MIT](https://img.shields.io/github/license/adieyal/dynamicprompts)
 &nbsp;-&nbsp;
