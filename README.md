@@ -5,9 +5,18 @@
 > **実験的フォーク版（dynamicprompts-plus）について：**
 > このフォークは、Stable Diffusion / ReForge 環境において、より高度な独自のプロンプト構文（`if` 文による条件分岐など）を実装するために作成されたカスタマイズ用コアライブラリです。
 > 
-> ⚠️ **現在のステータス**: まだ `if` 文などの新機能は追加されておらず、**開発準備中の段階（WIP）** です。機能としてはオリジナル版と全く同一です。
+> ✅ **専用機能: `if` コマンド構文**
+> このフォークでは、プロンプト内で変数値などに応じた条件分岐を行える `%if{...}` 構文が追加されています。
 > 
-> (Planned features: Support for Custom conditional statements such as `if` block parsing and advanced prompt flow generation. Currently in vanilla state.)
+> **基本的な構文**: `%if{演算子$$引数1($$引数2)$$条件を満たす時の出力($$満たさない時の出力)}`
+> 
+> **使用可能な演算子の例:**
+> - **`eq` (一致するか)**
+>   `${hat=!small hat}%if{eq$$${hat}$$big hat$$blue$$red}` → `red` が出力されます
+> - **`defined` (定義されているか)**
+>   `%if{defined$$hat$$blue hat$$red hat}`
+> - **`truthy` (真偽判定)**
+>   `%if{truthy$$true$$Yes$$No}` → `Yes` が出力されます
 
 ## A1111 / ReForge 環境での使い方 (How to install on WebUI)
 
