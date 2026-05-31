@@ -4,7 +4,7 @@ import pytest
 from dynamicprompts.commands.base import SamplingMethod
 from dynamicprompts.sampling_context import SamplingContext
 from dynamicprompts.wildcards import WildcardManager
-from pytest_lazyfixture import LazyFixture
+from pytest_lazy_fixtures import lf
 
 WILDCARD_DATA_DIR = Path(__file__).parent / "test_data" / "wildcards"
 assert WILDCARD_DATA_DIR.is_dir()
@@ -49,5 +49,5 @@ sampling_context_fixture_names = [
     "random_sampling_context",
 ]
 sampling_context_lazy_fixtures = [
-    LazyFixture(name) for name in sampling_context_fixture_names
+    lf(name) for name in sampling_context_fixture_names
 ]
