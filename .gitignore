@@ -1,6 +1,15 @@
 .env
 .vscode
 *.pyc
+__pycache__/
 dist
+build
 /.coverage
+coverage.xml
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
 *.code-workspace
+scratch/

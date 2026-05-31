@@ -1,0 +1,33 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new operator, syntax improvement, or other enhancement? Describe it below.
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What problem does this feature solve? Include an example prompt template if applicable.
+      placeholder: "I want to write `%if{lt$$${steps}$$20$$low quality warning}` to warn when step count is low."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_syntax
+    attributes:
+      label: Proposed syntax or behaviour
+      description: How would the new feature look? Describe the syntax and expected output.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you found any workarounds or considered other approaches?
+    validations:
+      required: false

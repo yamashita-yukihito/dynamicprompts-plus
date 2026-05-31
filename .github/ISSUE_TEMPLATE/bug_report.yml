@@ -1,0 +1,49 @@
+name: Bug Report
+description: Report a bug in dynamicprompts-plus
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill out the sections below.
+
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt template
+      description: The exact prompt template that caused the issue.
+      placeholder: "%if{eq$$${hat}$$big hat$$blue$$red}"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected output
+      description: What did you expect the prompt to produce?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual output or error
+      description: What did you actually get? Include the full traceback if there was an exception.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      description: Output of `pip show dynamicprompts` or the git commit hash.
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that might help — environment, WebUI version, etc.
+    validations:
+      required: false
