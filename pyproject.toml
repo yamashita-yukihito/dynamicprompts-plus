@@ -37,7 +37,7 @@ feelinglucky = ["requests<3"]
 yaml = ["pyyaml<7"]
 dev = [
     "pytest-cov~=4.0",
-    "pytest-lazy-fixture~=0.6",
+    "pytest-lazy-fixtures~=1.1",
     "pytest~=7.2",
 ]
 

@@ -18,7 +18,7 @@ from dynamicprompts.samplers import (
 from dynamicprompts.sampling_context import SamplingContext
 from dynamicprompts.wildcards import WildcardManager
 from dynamicprompts.wildcards.values import WildcardValues
-from pytest_lazyfixture import lazy_fixture
+from pytest_lazy_fixtures import lf
 
 from tests.conftest import sampling_context_lazy_fixtures
 from tests.consts import RED_GREEN_BLUE
@@ -51,9 +51,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["A literal sentence"] * 5),
-            (lazy_fixture("cyclical_sampling_context"), ["A literal sentence"] * 5),
-            (lazy_fixture("combinatorial_sampling_context"), ["A literal sentence"]),
+            (lf("random_sampling_context"), ["A literal sentence"] * 5),
+            (lf("cyclical_sampling_context"), ["A literal sentence"] * 5),
+            (lf("combinatorial_sampling_context"), ["A literal sentence"]),
         ],
     )
     def test_literals(
@@ -69,9 +69,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["Test [low emphasis]"] * 5),
-            (lazy_fixture("cyclical_sampling_context"), ["Test [low emphasis]"] * 5),
-            (lazy_fixture("combinatorial_sampling_context"), ["Test [low emphasis]"]),
+            (lf("random_sampling_context"), ["Test [low emphasis]"] * 5),
+            (lf("cyclical_sampling_context"), ["Test [low emphasis]"] * 5),
+            (lf("combinatorial_sampling_context"), ["Test [low emphasis]"]),
         ],
     )
     def test_literal_with_square_brackets(
@@ -88,14 +88,14 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 ["circle", "circle", "square", "circle", "square"],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ["square", "circle", "square", "circle", "square"],
             ),
-            (lazy_fixture("combinatorial_sampling_context"), ["square", "circle"]),
+            (lf("combinatorial_sampling_context"), ["square", "circle"]),
         ],
     )
     def test_variants(
@@ -115,7 +115,7 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 [
                     "red",
                     "red",
@@ -125,10 +125,10 @@ class TestPrompts:
                 ],  # TODO not correctly handling blanks
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ["red", "blue", "", "red", "blue"],
             ),
-            (lazy_fixture("combinatorial_sampling_context"), ["red", "blue", ""]),
+            (lf("combinatorial_sampling_context"), ["red", "blue", ""]),
         ],
     )
     def test_variant_with_blank(
@@ -149,7 +149,7 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 [
                     "A red circle",
                     "A green square",
@@ -159,7 +159,7 @@ class TestPrompts:
                 ],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 [
                     "A red square",
                     "A green circle",
@@ -169,7 +169,7 @@ class TestPrompts:
                 ],
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 ["A red square", "A red circle", "A green square", "A green circle"],
             ),
         ],
@@ -203,7 +203,7 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 [
                     "A red,green square",
                     "A green,red circle",
@@ -213,7 +213,7 @@ class TestPrompts:
                 ],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 [
                     "A red,green square",
                     "A green,red circle",
@@ -223,7 +223,7 @@ class TestPrompts:
                 ],
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 [
                     "A red,green square",
                     "A red,green circle",
@@ -266,7 +266,7 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 [
                     "A red,green square",
                     "A red square",
@@ -276,7 +276,7 @@ class TestPrompts:
                 ],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 [
                     "A red square",
                     "A green square",
@@ -286,7 +286,7 @@ class TestPrompts:
                 ],
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 [
                     "A red square",
                     "A green square",
@@ -326,18 +326,18 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 [
                     "red|blue",
                     "blue|green",
                 ],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 cross(RED_GREEN_BLUE, RED_GREEN_BLUE, sep="|"),
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 cross(RED_GREEN_BLUE, RED_GREEN_BLUE, sep="|"),
             ),
         ],
@@ -374,13 +374,13 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             # (  # TODO - fix this
-            #     lazy_fixture("random_sampling_context"),
+            #     lf("random_sampling_context"),
             #     [
             #         "blue", "red"
             #     ],
             # ),
-            (lazy_fixture("cyclical_sampling_context"), RED_GREEN_BLUE),
-            (lazy_fixture("combinatorial_sampling_context"), RED_GREEN_BLUE),
+            (lf("cyclical_sampling_context"), RED_GREEN_BLUE),
+            (lf("combinatorial_sampling_context"), RED_GREEN_BLUE),
         ],
     )
     def test_weighted_variant(
@@ -400,13 +400,13 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["A green circle", "A red"]),
+            (lf("random_sampling_context"), ["A green circle", "A red"]),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ["A red", "A green square", "A red", "A green circle"],
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 ["A red", "A green square", "A green circle"],
             ),
         ],
@@ -447,11 +447,11 @@ class TestPrompts:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 ["blue", "red"],
             ),
-            (lazy_fixture("cyclical_sampling_context"), RED_GREEN_BLUE * 2),
-            (lazy_fixture("combinatorial_sampling_context"), RED_GREEN_BLUE),
+            (lf("cyclical_sampling_context"), RED_GREEN_BLUE * 2),
+            (lf("combinatorial_sampling_context"), RED_GREEN_BLUE),
         ],
     )
     def test_wildcards(
@@ -475,9 +475,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["A __missing__ wildcard"] * 5),
-            (lazy_fixture("cyclical_sampling_context"), ["A __missing__ wildcard"] * 5),
-            (lazy_fixture("combinatorial_sampling_context"), []),
+            (lf("random_sampling_context"), ["A __missing__ wildcard"] * 5),
+            (lf("cyclical_sampling_context"), ["A __missing__ wildcard"] * 5),
+            (lf("combinatorial_sampling_context"), []),
         ],
     )
     def test_missing_wildcard(
@@ -496,9 +496,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            (lazy_fixture("random_sampling_context"), "shuffled_colours"),
-            (lazy_fixture("cyclical_sampling_context"), "wildcard_colours"),
-            (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+            (lf("random_sampling_context"), "shuffled_colours"),
+            (lf("cyclical_sampling_context"), "wildcard_colours"),
+            (lf("combinatorial_sampling_context"), "wildcard_colours"),
         ],
     )
     def test_nested_wildcard(
@@ -518,9 +518,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            # (lazy_fixture("random_sampling_context"), "shuffled_colours"), # TODO - fix this
-            (lazy_fixture("cyclical_sampling_context"), "wildcard_colours"),
-            (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+            # (lf("random_sampling_context"), "shuffled_colours"), # TODO - fix this
+            (lf("cyclical_sampling_context"), "wildcard_colours"),
+            (lf("combinatorial_sampling_context"), "wildcard_colours"),
         ],
     )
     def test_nested_wildcard_with_range_and_literal(
@@ -565,9 +565,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context"),
         [
-            (lazy_fixture("random_sampling_context")),
-            (lazy_fixture("cyclical_sampling_context")),
-            (lazy_fixture("combinatorial_sampling_context")),
+            (lf("random_sampling_context")),
+            (lf("cyclical_sampling_context")),
+            (lf("combinatorial_sampling_context")),
         ],
     )
     def test_variants_with_larger_bounds_than_choices(
@@ -583,9 +583,9 @@ class TestPrompts:
     @pytest.mark.parametrize(
         ("sampling_context"),
         [
-            (lazy_fixture("random_sampling_context")),
-            (lazy_fixture("cyclical_sampling_context")),
-            (lazy_fixture("combinatorial_sampling_context")),
+            (lf("random_sampling_context")),
+            (lf("cyclical_sampling_context")),
+            (lf("combinatorial_sampling_context")),
         ],
     )
     def test_nospace_before_or_after_wildcard(

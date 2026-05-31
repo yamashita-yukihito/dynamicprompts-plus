@@ -4,15 +4,15 @@ from dynamicprompts.commands import (
 )
 from dynamicprompts.samplers.utils import wildcard_to_variant
 from dynamicprompts.sampling_context import SamplingContext
-from pytest_lazyfixture import lazy_fixture
+from pytest_lazy_fixtures import lf
 
 
 @pytest.mark.parametrize(
     ("sampling_context",),
     [
-        (lazy_fixture("random_sampling_context"),),
-        # (lazy_fixture("cyclical_sampling_context"), "wildcard_colours2"),
-        # (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+        (lf("random_sampling_context"),),
+        # (lf("cyclical_sampling_context"), "wildcard_colours2"),
+        # (lf("combinatorial_sampling_context"), "wildcard_colours"),
     ],
 )
 def test_wildcard_to_variant(sampling_context: SamplingContext):

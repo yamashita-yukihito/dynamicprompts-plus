@@ -18,7 +18,7 @@ from dynamicprompts.samplers import CombinatorialSampler, CyclicalSampler, Rando
 from dynamicprompts.sampling_context import SamplingContext
 from dynamicprompts.wildcards import WildcardManager
 from dynamicprompts.wildcards.values import WildcardValues
-from pytest_lazyfixture import lazy_fixture
+from pytest_lazy_fixtures import lf
 
 from tests.conftest import (
     sampling_context_lazy_fixtures,
@@ -101,12 +101,12 @@ class TestVariantCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["one", "three", "two", "one"]),
+            (lf("random_sampling_context"), ["one", "three", "two", "one"]),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ["one", "two", "three", "one", "two"],
             ),
-            (lazy_fixture("combinatorial_sampling_context"), ["one", "two", "three"]),
+            (lf("combinatorial_sampling_context"), ["one", "two", "three"]),
         ],
     )
     def test_multiple_variant(
@@ -132,12 +132,12 @@ class TestVariantCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["three", "three", "one", "two"]),
+            (lf("random_sampling_context"), ["three", "three", "one", "two"]),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ["one", "two", "three", "one", "two"],
             ),
-            (lazy_fixture("combinatorial_sampling_context"), ["one", "two", "three"]),
+            (lf("combinatorial_sampling_context"), ["one", "two", "three"]),
         ],
     )
     def test_variant_with_literal(
@@ -182,15 +182,15 @@ class TestVariantCommand:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 ["three", "three,one", "one", "two,three"],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ONE_TWO_THREE + ONE_TWO_THREEx2 + ONE_TWO_THREE,
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 ONE_TWO_THREE + ONE_TWO_THREEx2,
             ),
         ],
@@ -226,15 +226,15 @@ class TestVariantCommand:
         ("sampling_context", "expected"),
         [
             (
-                lazy_fixture("random_sampling_context"),
+                lf("random_sampling_context"),
                 ["three", "three and one", "one", "two and three"],
             ),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ONE_TWO_THREE + ONE_TWO_THREEx2and + ONE_TWO_THREE,
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 ONE_TWO_THREE + ONE_TWO_THREEx2and,
             ),
         ],
@@ -271,9 +271,9 @@ class TestVariantCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            (lazy_fixture("random_sampling_context"), "shuffled_colours"),
-            (lazy_fixture("cyclical_sampling_context"), "wildcard_colours"),
-            (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+            (lf("random_sampling_context"), "shuffled_colours"),
+            (lf("cyclical_sampling_context"), "wildcard_colours"),
+            (lf("combinatorial_sampling_context"), "wildcard_colours"),
         ],
     )
     def test_variant_with_wildcard(
@@ -317,9 +317,9 @@ class TestVariantCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            (lazy_fixture("random_sampling_context"), "shuffled_cold_colours"),
-            (lazy_fixture("cyclical_sampling_context"), "cold_colours"),
-            (lazy_fixture("combinatorial_sampling_context"), "cold_colours"),
+            (lf("random_sampling_context"), "shuffled_cold_colours"),
+            (lf("cyclical_sampling_context"), "cold_colours"),
+            (lf("combinatorial_sampling_context"), "cold_colours"),
         ],
     )
     def test_variant_with_wildcard_and_high_bounds(
@@ -359,13 +359,13 @@ class TestVariantCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["red triangle", "blue circle"]),
+            (lf("random_sampling_context"), ["red triangle", "blue circle"]),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 zipstr(RED_GREEN_BLUE, SHAPES, sep=" "),
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 cross(RED_GREEN_BLUE, SHAPES, sep=" "),
             ),
         ],
@@ -402,13 +402,13 @@ class TestVariantCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), ["red triangle", "blue circle"]),
+            (lf("random_sampling_context"), ["red triangle", "blue circle"]),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 zipstr(RED_AND_GREEN, SHAPES, sep=" "),
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 cross(RED_AND_GREEN, SHAPES, sep=" "),
             ),
         ],
@@ -456,9 +456,9 @@ class TestWildcardsCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            (lazy_fixture("random_sampling_context"), "shuffled_colours"),
-            (lazy_fixture("cyclical_sampling_context"), "wildcard_coloursx2"),
-            (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+            (lf("random_sampling_context"), "shuffled_colours"),
+            (lf("cyclical_sampling_context"), "wildcard_coloursx2"),
+            (lf("combinatorial_sampling_context"), "wildcard_colours"),
         ],
     )
     def test_basic_wildcard(
@@ -481,9 +481,9 @@ class TestWildcardsCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            (lazy_fixture("random_sampling_context"), "shuffled_colours"),
-            (lazy_fixture("cyclical_sampling_context"), "wildcard_coloursx2"),
-            (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+            (lf("random_sampling_context"), "shuffled_colours"),
+            (lf("cyclical_sampling_context"), "wildcard_coloursx2"),
+            (lf("combinatorial_sampling_context"), "wildcard_colours"),
         ],
     )
     def test_wildcard_with_literal(
@@ -509,9 +509,9 @@ class TestWildcardsCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "key"),
         [
-            (lazy_fixture("random_sampling_context"), "shuffled_colours"),
-            (lazy_fixture("cyclical_sampling_context"), "wildcard_colours"),
-            (lazy_fixture("combinatorial_sampling_context"), "wildcard_colours"),
+            (lf("random_sampling_context"), "shuffled_colours"),
+            (lf("cyclical_sampling_context"), "wildcard_colours"),
+            (lf("combinatorial_sampling_context"), "wildcard_colours"),
         ],
     )
     def test_wildcard_with_variant(
@@ -561,13 +561,13 @@ class TestWildcardsCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            # (lazy_fixture("random_sampling_context"), ""),
+            # (lf("random_sampling_context"), ""),
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 ["red", "green", "blue", "pink", "green", "blue"],
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 ["red", "pink", "green", "blue"],
             ),
         ],
@@ -594,9 +594,9 @@ class TestWildcardsCommand:
     @pytest.mark.parametrize(
         ("sampling_context", "expected"),
         [
-            (lazy_fixture("random_sampling_context"), []),  # TODO fix this
+            (lf("random_sampling_context"), []),  # TODO fix this
             (
-                lazy_fixture("cyclical_sampling_context"),
+                lf("cyclical_sampling_context"),
                 [
                     "blue",
                     "red",
@@ -610,7 +610,7 @@ class TestWildcardsCommand:
                 ],
             ),
             (
-                lazy_fixture("combinatorial_sampling_context"),
+                lf("combinatorial_sampling_context"),
                 ["blue", "green", "red", "yellow"],
             ),
         ],
