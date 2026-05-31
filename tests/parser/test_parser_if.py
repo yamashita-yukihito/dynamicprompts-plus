@@ -1,10 +1,7 @@
 import pytest
-
 from dynamicprompts.commands import IfCommand, LiteralCommand
-from dynamicprompts.commands.if_command import Predicate
 from dynamicprompts.enums import SamplingMethod
 from dynamicprompts.parser.parse import parse
-from dynamicprompts.samplers.random import RandomSampler
 from dynamicprompts.sampling_context import SamplingContext
 from dynamicprompts.wildcards.wildcard_manager import WildcardManager
 
@@ -12,7 +9,7 @@ from dynamicprompts.wildcards.wildcard_manager import WildcardManager
 def _create_context():
     return SamplingContext(
         default_sampling_method=SamplingMethod.RANDOM,
-        wildcard_manager=WildcardManager()
+        wildcard_manager=WildcardManager(),
     )
 
 
