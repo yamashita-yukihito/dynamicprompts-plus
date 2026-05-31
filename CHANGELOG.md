@@ -1,3 +1,9 @@
+- 0.31.1+plus (dynamicprompts-plus fork)
+  - Feature: Add `%if{}` conditional command for runtime branching in prompt templates.
+    - Operators: `eq`, `neq`, `defined`, `truthy`.
+    - Syntax: `%if{op$$arg1($$arg2)$$then($$else)}`. The `else` branch is optional; a false predicate with no `else` evaluates to an empty string.
+    - Branches accept any prompt expression, so variants and nested `%if{}` commands compose normally.
+  - Tests: Added parsing and evaluation coverage for all operators, nested conditionals, optional `else`, and variable-driven branches (`tests/parser/test_parser_if.py`).
 - 0.31.0
   - Feature: Add Variable Support in Wildcard Paths (#110, #114) (thanks @mwootendev!)
   - Feature: Add wrap command (#102) (@akx)

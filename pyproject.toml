@@ -46,6 +46,8 @@ path = "src/dynamicprompts/__init__.py"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+testpaths = ["tests"]
+norecursedirs = ["scratch", ".venv", "dist", "build"]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
