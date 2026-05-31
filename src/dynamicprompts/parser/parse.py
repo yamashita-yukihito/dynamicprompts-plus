@@ -280,18 +280,37 @@ def _configure_if_command(
     if_start_str = parser_config.wrap_start.replace("%", "%if")
     if_start = pp.Suppress(if_start_str)
 
-    eq_or_neq = (pp.Literal("eq") | pp.Literal("neq"))("op") + variant_delim + prompt()("arg1") + variant_delim + prompt()("arg2") + variant_delim + prompt()("then_command") + pp.Opt(variant_delim + prompt()("else_command"))
-    defined = pp.Literal("defined")("op") + variant_delim + var_name("name") + variant_delim + prompt()("then_command") + pp.Opt(variant_delim + prompt()("else_command"))
-    truthy = pp.Literal("truthy")("op") + variant_delim + prompt()("arg1") + variant_delim + prompt()("then_command") + pp.Opt(variant_delim + prompt()("else_command"))
+    eq_or_neq = (
+        (pp.Literal("eq") | pp.Literal("neq"))("op")
+        + variant_delim
+        + prompt()("arg1")
+        + variant_delim
+        + prompt()("arg2")
+        + variant_delim
+        + prompt()("then_command")
+        + pp.Opt(variant_delim + prompt()("else_command"))
+    )
+    defined = (
+        pp.Literal("defined")("op")
+        + variant_delim
+        + var_name("name")
+        + variant_delim
+        + prompt()("then_command")
+        + pp.Opt(variant_delim + prompt()("else_command"))
+    )
+    truthy = (
+        pp.Literal("truthy")("op")
+        + variant_delim
+        + prompt()("arg1")
+        + variant_delim
+        + prompt()("then_command")
+        + pp.Opt(variant_delim + prompt()("else_command"))
+    )
 
     ops = pp.Group(eq_or_neq | defined | truthy)("predicate")
 
     if_command = pp.Group(
-        if_start
-        + OPT_WS
-        + ops
-        + OPT_WS
-        + pp.Suppress(parser_config.wrap_end),
+        if_start + OPT_WS + ops + OPT_WS + pp.Suppress(parser_config.wrap_end),
     )
     return if_command.leave_whitespace()
 
@@ -541,7 +560,12 @@ def create_parser(
         | literal_sequence
     )
     variant_chunk = (
-        variable_access | if_command | wrap_command | variants | wildcard | variant_literal_sequence
+        variable_access
+        | if_command
+        | wrap_command
+        | variants
+        | wildcard
+        | variant_literal_sequence
     )
     wildcard_chunk = (
         wildcard_variable_access

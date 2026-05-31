@@ -587,18 +587,18 @@ The general syntax is:
 - **operator** — one of `eq`, `neq`, `defined`, `truthy`
 - **argument1**, **argument2** — values to compare (the number of arguments depends on the operator)
 - **output_if_true** — the text produced when the condition is true
-- **output_if_false** *(optional)* — the text produced when the condition is false; if omitted, an empty string is used
+- **output_if_false** _(optional)_ — the text produced when the condition is false; if omitted, an empty string is used
 
 Arguments are separated by `$$` (double dollar signs), the same separator used in variants.
 
 ### Supported Operators
 
-| Operator | Arguments | Description |
-|----------|-----------|-------------|
-| `eq`     | 2         | True if argument1 equals argument2 |
-| `neq`    | 2         | True if argument1 does not equal argument2 |
-| `defined`| 1 (variable name) | True if the variable has been assigned a value |
-| `truthy` | 1         | True if the argument is considered "truthy" |
+| Operator  | Arguments         | Description                                    |
+| --------- | ----------------- | ---------------------------------------------- |
+| `eq`      | 2                 | True if argument1 equals argument2             |
+| `neq`     | 2                 | True if argument1 does not equal argument2     |
+| `defined` | 1 (variable name) | True if the variable has been assigned a value |
+| `truthy`  | 1                 | True if the argument is considered "truthy"    |
 
 #### `eq` — Equals
 
@@ -653,12 +653,13 @@ Evaluates whether a value is considered "true" or "false":
 
 The following values are considered **falsy** (case-insensitive):
 
-| Falsy values |
-|--------------|
-| `false`      |
-| `0`          |
-| `no`         |
-| `off`        |
+| Falsy values                           |
+| -------------------------------------- |
+| `false`                                |
+| `0`                                    |
+| `no`                                   |
+| `off`                                  |
+| `""` (empty string or whitespace only) |
 
 All other values are considered **truthy** (including `"TRUE"`, `"1"`, `"anything"`, etc.).
 
