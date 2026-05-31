@@ -5,6 +5,15 @@
 
 A fork of [adieyal/dynamicprompts](https://github.com/adieyal/dynamicprompts) that adds **conditional prompt evaluation** via the `%if{}` command — enabling runtime branching based on variable values directly in your prompt templates.
 
+> A small but actively maintained fork focused on **controllable, reproducible prompt-generation workflows** for Stable Diffusion / reForge.
+> Maintainer: Toru Yamada ([@yamashita-yukihito](https://github.com/yamashita-yukihito))
+
+## Why this fork exists
+
+dynamicprompts-plus exists to support more controllable and reproducible prompt-generation workflows for Stable Diffusion / reForge users.
+
+The original Dynamic Prompts ecosystem is excellent for random prompt variation, but some local image-generation workflows need conditional branching, reusable prompt logic, and more predictable behavior. This fork adds experimental syntax such as `%if{}` to make complex prompt templates easier to manage, debug, and reproduce — without giving up compatibility with the upstream templating language.
+
 ## What's new in this fork
 
 ### `%if{}` — Conditional evaluation
@@ -75,9 +84,27 @@ pip install git+https://github.com/yamashita-yukihito/dynamicprompts-plus.git
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and contribution guidelines.
 
+## Maintenance status
+
+This repository is actively maintained as part of my own local AI image-generation workflow.
+
+Although this fork is currently small and niche, I use it directly in Stable Diffusion / reForge prompt workflows and plan to keep improving it with parser tests, clearer documentation, compatibility notes, and examples for conditional prompt syntax. It is not a large project and makes no claim to a wide user base — it is a focused fork driven by real, day-to-day prompt-engineering needs.
+
+Maintainer: Toru Yamada ([@yamashita-yukihito](https://github.com/yamashita-yukihito))
+
+## Roadmap
+
+- Keep `%if{}` parser and sampler behavior covered by tests
+- Document edge cases for nested prompt templates
+- Improve examples for Stable Diffusion WebUI / reForge users
+- Add compatibility notes for adjacent ComfyUI / reForge workflows
+- Keep the fork aligned with upstream [`adieyal/dynamicprompts`](https://github.com/adieyal/dynamicprompts) where practical
+
 ---
 
 ## Original dynamicprompts documentation
+
+> The sections below are inherited from the upstream Dynamic Prompts documentation and are kept here for compatibility and reference. The fork-specific additions (the `%if{}` command and the notes above) are documented in the earlier sections of this README. The PyPI badges below refer to the upstream package, not to this fork.
 
 ![MIT](https://img.shields.io/github/license/adieyal/dynamicprompts)
 &nbsp;-&nbsp;
