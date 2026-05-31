@@ -37,6 +37,17 @@ This guide will walk you through the template language used to generate dynamic 
   - [Preserving Existing Values](#preserving-existing-values)
 - [Whitespace and comments](#whitespace-and-comments)
 - [Wrap command](#wrap-command)
+- [Conditional command (`%if{}`)](#conditional-command-if)
+  - [Syntax](#syntax)
+  - [Supported Operators](#supported-operators)
+    - [`eq` — Equals](#eq--equals)
+    - [`neq` — Not equals](#neq--not-equals)
+    - [`defined` — Variable is defined](#defined--variable-is-defined)
+    - [`truthy` — Truthiness check](#truthy--truthiness-check)
+  - [Omitting the else branch](#omitting-the-else-branch)
+  - [Combining with variables](#combining-with-variables)
+  - [Nesting conditionals](#nesting-conditionals)
+  - [Using variants inside branches](#using-variants-inside-branches)
 - [Samplers](#samplers)
   - [Random Sampler](#random-sampler)
   - [Combinatorial Sampler](#combinatorial-sampler)
@@ -558,6 +569,163 @@ Both sides of the wrap command are evaluated before the wrap itself is, so this 
 
 Various ellipsis characters are supported for the `...` placeholder, but `...` (3 ASCII periods)
 might be the easiest to use.
+
+## Conditional command (`%if{}`)
+
+> **New in dynamicprompts-plus** — This feature is not available in the upstream dynamicprompts.
+
+The `%if{}` command enables runtime branching based on variable values directly in your prompt templates. You can conditionally include or exclude parts of a prompt depending on whether a condition is met.
+
+### Syntax
+
+The general syntax is:
+
+```
+%if{operator$$argument1($$argument2)$$output_if_true($$output_if_false)}
+```
+
+- **operator** — one of `eq`, `neq`, `defined`, `truthy`
+- **argument1**, **argument2** — values to compare (the number of arguments depends on the operator)
+- **output_if_true** — the text produced when the condition is true
+- **output_if_false** _(optional)_ — the text produced when the condition is false; if omitted, an empty string is used
+
+Arguments are separated by `$$` (double dollar signs), the same separator used in variants.
+
+### Supported Operators
+
+| Operator  | Arguments         | Description                                    |
+| --------- | ----------------- | ---------------------------------------------- |
+| `eq`      | 2                 | True if argument1 equals argument2             |
+| `neq`     | 2                 | True if argument1 does not equal argument2     |
+| `defined` | 1 (variable name) | True if the variable has been assigned a value |
+| `truthy`  | 1                 | True if the argument is considered "truthy"    |
+
+#### `eq` — Equals
+
+Compares two values for equality. Often used with variables:
+
+```
+%if{eq$$${hat}$$big hat$$blue$$red}
+```
+
+- If `${hat}` evaluates to `"big hat"` → produces `"blue"`
+- Otherwise → produces `"red"`
+
+#### `neq` — Not equals
+
+The inverse of `eq`:
+
+```
+%if{neq$$${mood}$$happy$$a gloomy scene$$a cheerful scene}
+```
+
+- If `${mood}` is **not** `"happy"` → produces `"a gloomy scene"`
+- If `${mood}` **is** `"happy"` → produces `"a cheerful scene"`
+
+#### `defined` — Variable is defined
+
+Checks whether a variable has been assigned. Unlike other operators, the first argument is the **variable name** (without `${}` syntax):
+
+```
+%if{defined$$hat$$wearing a hat}
+```
+
+- If the variable `hat` has been assigned → produces `"wearing a hat"`
+- Otherwise → produces an empty string (since no else branch is provided)
+
+With an else branch:
+
+```
+%if{defined$$hat$$wearing a ${hat}$$bareheaded}
+```
+
+#### `truthy` — Truthiness check
+
+Evaluates whether a value is considered "true" or "false":
+
+```
+%if{truthy$$true$$Yes$$No}
+# → "Yes"
+
+%if{truthy$$0$$Yes$$No}
+# → "No"
+```
+
+The following values are considered **falsy** (case-insensitive):
+
+| Falsy values                           |
+| -------------------------------------- |
+| `false`                                |
+| `0`                                    |
+| `no`                                   |
+| `off`                                  |
+| `""` (empty string or whitespace only) |
+
+All other values are considered **truthy** (including `"TRUE"`, `"1"`, `"anything"`, etc.).
+
+### Omitting the else branch
+
+The else branch is optional. If a condition is false and no else branch is provided, the result is an empty string:
+
+```
+%if{eq$$A$$B$$Match}
+# A ≠ B, so the result is "" (empty string)
+
+%if{defined$$hat$$wearing a hat}
+# If hat is not defined → "" (empty string)
+```
+
+This is useful for optionally appending content:
+
+```
+${season=!winter} a beautiful landscape, %if{eq$$${season}$$winter$$covered in snow}
+# → "a beautiful landscape, covered in snow"
+```
+
+### Combining with variables
+
+The `%if{}` command is most powerful when combined with variable assignment. A common pattern is to set a variable and then branch based on its value:
+
+```
+${hat=!small hat}%if{eq$$${hat}$$big hat$$blue$$red}
+# hat = "small hat", which ≠ "big hat" → "red"
+
+${hat=!big hat}%if{eq$$${hat}$$big hat$$blue$$red}
+# hat = "big hat" → "blue"
+```
+
+You can also use immediate evaluation with wildcards:
+
+```
+${season=!{summer|autumn|winter|spring}}%if{eq$$${season}$$winter$$a snowy landscape$$a sunny meadow}
+# Randomly picks a season, then conditionally outputs the appropriate scene
+```
+
+### Nesting conditionals
+
+You can nest `%if{}` commands inside the then or else branches:
+
+```
+%if{eq$$A$$A$$%if{eq$$B$$B$$inner-yes$$inner-no}$$outer-no}
+# Outer condition is true (A==A), inner condition is true (B==B) → "inner-yes"
+
+%if{eq$$A$$Z$$%if{eq$$B$$B$$inner-yes$$inner-no}$$outer-no}
+# Outer condition is false (A≠Z) → "outer-no" (inner %if is never evaluated)
+```
+
+This allows you to create multi-level decision trees within your prompts.
+
+### Using variants inside branches
+
+Branches can contain any valid prompt expression, including variants and wildcards:
+
+```
+%if{eq$$A$$A$${red|green|blue}$$no}
+# Condition is true → randomly picks one of red, green, blue
+
+%if{defined$$style$$__styles/${style}__$$__styles/default__}
+# If style is defined → loads a wildcard file based on the style variable
+```
 
 ## Samplers
 
