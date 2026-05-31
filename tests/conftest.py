@@ -48,6 +48,4 @@ sampling_context_fixture_names = [
     "cyclical_sampling_context",
     "random_sampling_context",
 ]
-sampling_context_lazy_fixtures = [
-    lf(name) for name in sampling_context_fixture_names
-]
+sampling_context_lazy_fixtures = [lf(name) for name in sampling_context_fixture_names]

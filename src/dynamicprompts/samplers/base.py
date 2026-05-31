@@ -137,7 +137,7 @@ class Sampler:
             assert isinstance(arg1, Command) and isinstance(arg2, Command)
             left = next(iter(context.sample_prompts(arg1, 1))).text
             right = next(iter(context.sample_prompts(arg2, 1))).text
-            is_eq = (left == right)
+            is_eq = left == right
             return is_eq if op == "eq" else not is_eq
 
         return False

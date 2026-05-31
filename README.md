@@ -12,18 +12,19 @@ A fork of [adieyal/dynamicprompts](https://github.com/adieyal/dynamicprompts) th
 The `%if{op$$arg1($$arg2)$$then($$else)}` syntax lets you branch on variable values at generation time.
 
 **Syntax:**
+
 ```
 %if{operator$$argument1($$argument2)$$output_if_true($$output_if_false)}
 ```
 
 **Supported operators:**
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `eq` | Equals | `%if{eq$$${hat}$$big hat$$blue$$red}` |
-| `neq` | Not equals | `%if{neq$$${hat}$$big hat$$blue$$red}` |
-| `defined` | Variable is defined | `%if{defined$$hat$$wearing a hat}` |
-| `truthy` | Truthiness check | `%if{truthy$$true$$Yes$$No}` |
+| Operator  | Description         | Example                                |
+| --------- | ------------------- | -------------------------------------- |
+| `eq`      | Equals              | `%if{eq$$${hat}$$big hat$$blue$$red}`  |
+| `neq`     | Not equals          | `%if{neq$$${hat}$$big hat$$blue$$red}` |
+| `defined` | Variable is defined | `%if{defined$$hat$$wearing a hat}`     |
+| `truthy`  | Truthiness check    | `%if{truthy$$true$$Yes$$No}`           |
 
 **Examples:**
 
