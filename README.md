@@ -6,7 +6,6 @@
 A fork of [adieyal/dynamicprompts](https://github.com/adieyal/dynamicprompts) that adds **conditional prompt evaluation** via the `%if{}` command — enabling runtime branching based on variable values directly in your prompt templates.
 
 > A small but actively maintained fork focused on **controllable, reproducible prompt-generation workflows** for Stable Diffusion / reForge.
-> Maintainer: Toru Yamada ([@yamashita-yukihito](https://github.com/yamashita-yukihito))
 
 ## Why this fork exists
 
@@ -89,8 +88,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and contribution gu
 This repository is actively maintained as part of my own local AI image-generation workflow.
 
 Although this fork is currently small and niche, I use it directly in Stable Diffusion / reForge prompt workflows and plan to keep improving it with parser tests, clearer documentation, compatibility notes, and examples for conditional prompt syntax. It is not a large project and makes no claim to a wide user base — it is a focused fork driven by real, day-to-day prompt-engineering needs.
-
-Maintainer: Toru Yamada ([@yamashita-yukihito](https://github.com/yamashita-yukihito))
 
 ## Roadmap
 
